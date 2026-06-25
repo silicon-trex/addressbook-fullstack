@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.addressbook.mapper.UserMapper">
+
+    <resultMap id="userMap" type="User">
+        <id property="userId" column="用户编号"/>
+        <result property="username" column="用户名"/>
+        <result property="password" column="密码"/>
+        <result property="age" column="年龄"/>
+        <result property="createTime" column="注册时间"/>
+    </resultMap>
+
+    <select id="findByUsername" resultMap="userMap">
+        SELECT * FROM `用户表` WHERE `用户名` = #{username}
+    </select>
+
+    <select id="findByUsernameAndPassword" resultMap="userMap">
+        SELECT * FROM `用户表` WHERE `用户名` = #{username} AND `密码` = #{password}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO `用户表` (`用户名`, `密码`, `年龄`)
+        VALUES (#{username}, #{password}, #{age})
+    </insert>
+
+    <select id="countByUsername" resultType="int">
+        SELECT COUNT(*) FROM `用户表` WHERE `用户名` = #{username}
+    </select>
+</mapper>

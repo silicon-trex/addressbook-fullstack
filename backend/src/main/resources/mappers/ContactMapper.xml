@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.addressbook.mapper.ContactMapper">
+
+    <resultMap id="contactMap" type="Contact">
+        <id property="id" column="编号"/>
+        <result property="name" column="姓名"/>
+        <result property="gender" column="性别"/>
+        <result property="address" column="通讯地址"/>
+        <result property="email" column="邮箱地址"/>
+        <result property="phone" column="电话"/>
+        <result property="userId" column="所属用户"/>
+        <result property="createTime" column="创建时间"/>
+    </resultMap>
+
+    <select id="findAllByUserId" resultMap="contactMap">
+        SELECT * FROM `通讯录表` WHERE `所属用户` = #{userId} ORDER BY `编号` DESC
+    </select>
+
+    <select id="findByIdAndUserId" resultMap="contactMap">
+        SELECT * FROM `通讯录表` WHERE `编号` = #{id} AND `所属用户` = #{userId}
+    </select>
+
+    <select id="search" resultMap="contactMap">
+        SELECT * FROM `通讯录表`
+        WHERE `所属用户` = #{userId}
+        AND (`姓名` LIKE CONCAT('%', #{keyword}, '%')
+        OR `电话` LIKE CONCAT('%', #{keyword}, '%')
+        OR `邮箱地址` LIKE CONCAT('%', #{keyword}, '%'))
+        ORDER BY `编号` DESC
+    </select>
+
+    <insert id="insert">
+        INSERT INTO `通讯录表` (`姓名`, `性别`, `通讯地址`, `邮箱地址`, `电话`, `所属用户`)
+        VALUES (#{name}, #{gender}, #{address}, #{email}, #{phone}, #{userId})
+    </insert>
+
+    <update id="update">
+        UPDATE `通讯录表`
+        SET `姓名` = #{name}, `性别` = #{gender}, `电话` = #{phone},
+            `邮箱地址` = #{email}, `通讯地址` = #{address}
+        WHERE `编号` = #{id} AND `所属用户` = #{userId}
+    </update>
+
+    <delete id="deleteByIdAndUserId">
+        DELETE FROM `通讯录表` WHERE `编号` = #{id} AND `所属用户` = #{userId}
+    </delete>
+
+    <select id="countByPhoneAndUserId" resultType="int">
+        SELECT COUNT(*) FROM `通讯录表` WHERE `电话` = #{phone} AND `所属用户` = #{userId}
+    </select>
+
+    <select id="countByPhoneAndUserIdExcludeId" resultType="int">
+        SELECT COUNT(*) FROM `通讯录表`
+        WHERE `电话` = #{phone} AND `所属用户` = #{userId} AND `编号` != #{excludeId}
+    </select>
+</mapper>
