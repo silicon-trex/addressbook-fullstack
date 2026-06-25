@@ -27,7 +27,7 @@
 cd backend
 # 复制配置模板并填写你的数据库信息
 cp src/main/resources/application.yml.example src/main/resources/application.yml
-# 用 IDEA 打开 backend/ 目录，运行 AddressBookApplication
+# 用 IDE 打开 backend/ 目录，运行 AddressBookApplication
 ```
 
 ### 2. 启动前端
